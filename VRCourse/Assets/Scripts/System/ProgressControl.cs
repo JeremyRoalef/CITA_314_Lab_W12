@@ -48,12 +48,27 @@ public class ProgressControl : MonoBehaviour
     [SerializeField]
     GameObject teleportationAreas;
     bool startGame;
+    [SerializeField]
     int challengeNum;
 
     [Header("Library")]
     [SerializeField]
     SimpleSliderControl librarySlider;
 
+    [Header("The robot")]
+    [SerializeField]
+    NavMeshRobot robot;
+
+
+    [SerializeField]
+    int wallCubesToDestroy;
+
+    int wallCubesDestroyed;
+
+    bool challengesCompleted;
+
+    [SerializeField]
+    string endGameString;
 
     //Called before first frame update
     void Start()
@@ -79,6 +94,20 @@ public class ProgressControl : MonoBehaviour
         if (librarySlider != null)
         {
             librarySlider.OnSliderActive.AddListener(LibrarySliderActive);
+        }
+        if (robot != null)
+        {
+            robot.OnDestroyWallCube.AddListener(OnDestroyWallCube);
+        }
+    }
+
+    private void OnDestroyWallCube()
+    {
+        wallCubesDestroyed++;
+        if (wallCubesDestroyed >= wallCubesToDestroy && !challengesCompleted)
+        {
+            challengesCompleted = true;
+            ChallengeComplete();
         }
     }
 
@@ -148,6 +177,7 @@ public class ProgressControl : MonoBehaviour
         else if (challengeNum >= challengeStrings.Length)
         {
             //ALL CHALLENGES COMPLETE
+            OnChallengeComplete?.Invoke(endGameString);
         }
     }
 

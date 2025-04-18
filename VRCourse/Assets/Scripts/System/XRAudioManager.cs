@@ -93,6 +93,20 @@ public class XRAudioManager : MonoBehaviour
     AudioClip wallSocketClip;
 
 
+    [Header("Joysitck Interactable")]
+
+    [SerializeField]
+    SimpleHingeInteractable joystick;
+    AudioSource joystickSound;
+    AudioClip joystickClip;
+
+    [Header("The Robot")]
+
+    [SerializeField]
+    NavMeshRobot robot;
+    AudioSource destroyWallCubeSound;
+    AudioClip destroyWallCubeClip;
+
     [Header("Local Audio Settings")]
 
     [SerializeField]
@@ -150,8 +164,51 @@ public class XRAudioManager : MonoBehaviour
             SetComboLock();
         }
 
+        //Joystick
+        if (joystick != null)
+        {
+            SetJoystick();
+        }
+
+        if (robot != null)
+        {
+            SetRobot();
+        }
     }
 
+    private void SetRobot()
+    {
+        destroyWallCubeSound = robot.transform.AddComponent<AudioSource>();
+        destroyWallCubeClip = robot.GetCollisionClip();
+        destroyWallCubeSound.clip = destroyWallCubeClip;
+
+        robot.OnDestroyWallCube.AddListener(OnDestroyWallCube);
+    }
+
+    private void OnDestroyWallCube()
+    {
+        destroyWallCubeSound.Play();
+    }
+
+    private void SetJoystick()
+    {
+        joystickClip = joystick.GetHingeMoveClip;
+        joystickSound = joystick.transform.AddComponent<AudioSource>();
+        joystickSound.clip = joystickClip;
+        joystickSound.loop = true;
+        joystick.OnHingeSelected.AddListener(JoystickMove);
+        joystick.selectExited.AddListener(JoystickExited);
+    }
+
+    private void JoystickExited(SelectExitEventArgs arg0)
+    {
+        joystickSound.Stop();
+    }
+
+    private void JoystickMove(SimpleHingeInteractable arg0)
+    {
+        joystickSound.Play();
+    }
 
     private void ChallengeComplete(string arg0)
     {

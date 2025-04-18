@@ -9,6 +9,11 @@ public class NavMeshRobot : MonoBehaviour
 {
     public UnityEvent OnDestroyWallCube;
 
+    [SerializeField]
+    AudioClip collisionClip;
+
+    public AudioClip GetCollisionClip() => collisionClip;
+
     NavMeshAgent agent;
 
     const string WALL_CUBE_STRING = "WallCube";
