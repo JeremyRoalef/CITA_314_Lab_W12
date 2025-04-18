@@ -107,13 +107,19 @@ public class ProgressControl : MonoBehaviour
         if (wallCubesDestroyed >= wallCubesToDestroy && !challengesCompleted)
         {
             challengesCompleted = true;
-            ChallengeComplete();
+            if (challengeNum == 6)
+            {
+                ChallengeComplete();
+            }
         }
     }
 
     private void LibrarySliderActive()
     {
-        ChallengeComplete();
+        if (challengeNum == 5)
+        {
+            ChallengeComplete();
+        }
     }
 
     private void SetWall()
@@ -129,13 +135,19 @@ public class ProgressControl : MonoBehaviour
 
     private void OnWallSocketed(SelectEnterEventArgs arg0)
     {
-        ChallengeComplete();
+        if (challengeNum == 3)
+        {
+            ChallengeComplete();
+        }
     }
 
     private void OnDestroyWall()
     {
-        ChallengeComplete();
-        if(teleportationAreas != null)
+        if (challengeNum == 4)
+        {
+            ChallengeComplete();
+        }
+        if (teleportationAreas != null)
         {
             teleportationAreas.SetActive(true);
         }
@@ -143,7 +155,10 @@ public class ProgressControl : MonoBehaviour
 
     private void OnComboUnlocked()
     {
-        ChallengeComplete();
+        if (challengeNum == 2)
+        {
+            ChallengeComplete();
+        }
     }
 
     //Method for when button is pressed
@@ -158,7 +173,7 @@ public class ProgressControl : MonoBehaviour
                 keyInteractableLight.SetActive(true);
             }
 
-            if (challengeNum < challengeStrings.Length)
+            if (challengeNum < challengeStrings.Length && challengeNum == 0)
             {
                 OnStartGame?.Invoke(challengeStrings[challengeNum]);
             }
@@ -198,11 +213,18 @@ public class ProgressControl : MonoBehaviour
 
     private void OnDrawerDetatch()
     {
-        ChallengeComplete();
+        if (challengeNum == 1)
+        {
+            ChallengeComplete();
+        }
     }
 
     private void OnDrawerSocketed(SelectEnterEventArgs arg0)
     {
-        ChallengeComplete();
+        if (challengeNum == 0)
+        {
+            ChallengeComplete();
+
+        }
     }
 }
